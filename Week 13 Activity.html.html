@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Activity 1 — Bootstrap Dashboard</title>
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ── CSS Variables ── */
+    :root {
+      --bs-primary: #f97316;           /* override Bootstrap primary */
+      --bs-primary-rgb: 249, 115, 22;
+      --primary:   #f97316;
+      --primary-dark: #c2410c;
+      --accent:    #facc15;
+      --surface:   #0f172a;
+      --surface-2: #1e293b;
+      --surface-3: #334155;
+      --text:      #f1f5f9;
+      --text-muted:#94a3b8;
+      --radius:    12px;
+    }
+
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    .navbar-brand, .display-heading {
+      font-family: 'Syne', sans-serif;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--surface-3);
+      padding-block: .9rem;
+    }
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--text) !important;
+      letter-spacing: -.5px;
+    }
+    .navbar-brand span { color: var(--primary); }
+
+    .nav-link {
+      color: var(--text-muted) !important;
+      font-weight: 500;
+      transition: color .2s;
+      position: relative;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--text) !important; }
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .navbar-toggler {
+      border-color: var(--surface-3);
+    }
+    .navbar-toggler-icon {
+      filter: invert(1);
+    }
+
+    .btn-nav-cta {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      padding: .45rem 1.1rem;
+      transition: background .2s, transform .15s;
+    }
+    .btn-nav-cta:hover {
+      background: var(--primary-dark);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface) 60%);
+      padding: 5rem 0 4rem;
+      border-bottom: 1px solid var(--surface-3);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(249,115,22,.18) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+    }
+    .hero-title span { color: var(--primary); }
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(249,115,22,.15);
+      border: 1px solid rgba(249,115,22,.35);
+      color: var(--primary);
+      border-radius: 100px;
+      padding: .3rem .85rem;
+      font-size: .8rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── Stats Row ── */
+    .stats-section { padding: 2.5rem 0; }
+    .stat-card {
+      background: var(--surface-2);
+      border: 1px solid var(--surface-3);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      transition: transform .2s, border-color .2s;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+    .stat-label {
+      color: var(--text-muted);
+      font-size: .8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: .3rem;
+    }
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-value .unit { font-size: 1rem; color: var(--primary); margin-left: 3px; }
+    .stat-icon {
+      width: 40px; height: 40px;
+      background: rgba(249,115,22,.12);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem;
+      color: var(--primary);
+    }
+
+    /* ── Cards Section ── */
+    .cards-section { padding: 0 0 4rem; }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      margin-bottom: 1.5rem;
+    }
+    .section-title span { color: var(--primary); }
+
+    /* Bootstrap card overrides */
+    .card {
+      background: var(--surface-2);
+      border: 1px solid var(--surface-3);
+      border-radius: var(--radius);
+      color: var(--text);
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.35);
+      border-color: rgba(249,115,22,.4);
+    }
+    .card-img-top {
+      border-radius: var(--radius) var(--radius) 0 0;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-img-placeholder {
+      height: 180px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .card-text { color: var(--text-muted); font-size: .9rem; }
+    .card-footer {
+      background: transparent;
+      border-top: 1px solid var(--surface-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ── Primary Button (overrides Bootstrap) ── */
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      border-radius: 8px;
+      transition: background .2s, transform .15s;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+    .btn-outline-primary {
+      color: var(--primary);
+      border-color: var(--primary);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      border-radius: 8px;
+    }
+    .btn-outline-primary:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* ── Modal ── */
+    .modal-content {
+      background: var(--surface-2);
+      border: 1px solid var(--surface-3);
+      border-radius: var(--radius);
+      color: var(--text);
+    }
+    .modal-header {
+      border-bottom: 1px solid var(--surface-3);
+      padding: 1.4rem 1.6rem 1rem;
+    }
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+    }
+    .modal-footer {
+      border-top: 1px solid var(--surface-3);
+      padding: 1rem 1.6rem 1.4rem;
+    }
+    .btn-close {
+      filter: invert(1) brightness(.7);
+    }
+
+    /* ── Form Styles ── */
+    .form-label {
+      font-weight: 500;
+      font-size: .88rem;
+      color: var(--text-muted);
+      margin-bottom: .35rem;
+    }
+    .form-control, .form-select {
+      background: var(--surface-3);
+      border: 1px solid #475569;
+      border-radius: 8px;
+      color: var(--text);
+      font-size: .9rem;
+      padding: .6rem .9rem;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-control:focus, .form-select:focus {
+      background: var(--surface-3);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(249,115,22,.2);
+      color: var(--text);
+    }
+    .form-control::placeholder { color: #64748b; }
+    .form-control.is-invalid, .form-select.is-invalid {
+      border-color: #f87171;
+      background-image: none;
+    }
+    .form-control.is-valid, .form-select.is-valid {
+      border-color: #34d399;
+      background-image: none;
+    }
+    .invalid-feedback { color: #f87171; font-size: .8rem; }
+    .valid-feedback   { color: #34d399;  font-size: .8rem; }
+
+    /* Success message */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .form-success .success-icon {
+      width: 64px; height: 64px;
+      background: rgba(52,211,153,.15);
+      border: 2px solid #34d399;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: #34d399;
+      margin: 0 auto 1rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--surface-2);
+      border-top: 1px solid var(--surface-3);
+      padding: 2rem 0;
+      color: var(--text-muted);
+      font-size: .85rem;
+      text-align: center;
+    }
+    footer a { color: var(--primary); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR  (Part A requirement)
+════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">
+      <i class="bi bi-layers-half me-1"></i>Dash<span>Board</span>
+    </a>
+
+    <!-- Hamburger toggle (mobile) -->
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNav"
+            aria-controls="mainNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Analytics</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Team</a></li>
+        <li class="nav-item ms-lg-3">
+          <!-- Opens Modal -->
+          <button class="btn btn-nav-cta" data-bs-toggle="modal" data-bs-target="#contactModal">
+            <i class="bi bi-envelope-fill me-1"></i>Contact Us
+          </button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">
+      <i class="bi bi-lightning-fill"></i> Activity 1 — Bootstrap Dashboard
+    </div>
+    <h1 class="hero-title">
+      Your modern<br><span>project hub</span>
+    </h1>
+    <p class="hero-sub mt-3">
+      A fully responsive Bootstrap 5 dashboard with a validated contact
+      form, cards, and an accessible modal — built for Activity 1.
+    </p>
+    <div class="d-flex flex-wrap gap-3 mt-4">
+      <button class="btn btn-primary px-4"
+              data-bs-toggle="modal" data-bs-target="#contactModal">
+        <i class="bi bi-send-fill me-2"></i>Open Contact Form
+      </button>
+      <a class="btn btn-outline-primary px-4" href="#cards">
+        <i class="bi bi-grid-3x3-gap-fill me-2"></i>View Projects
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     STATS ROW
+════════════════════════════════════════════ -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row g-3">
+
+      <div class="col-6 col-md-3">
+        <div class="stat-card d-flex align-items-start gap-3">
+          <div class="stat-icon"><i class="bi bi-folder2-open"></i></div>
+          <div>
+            <div class="stat-label">Projects</div>
+            <div class="stat-value">48<span class="unit">+</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="stat-card d-flex align-items-start gap-3">
+          <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+          <div>
+            <div class="stat-label">Team Members</div>
+            <div class="stat-value">12</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="stat-card d-flex align-items-start gap-3">
+          <div class="stat-icon"><i class="bi bi-check2-circle"></i></div>
+          <div>
+            <div class="stat-label">Completed</div>
+            <div class="stat-value">93<span class="unit">%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <div class="stat-card d-flex align-items-start gap-3">
+          <div class="stat-icon"><i class="bi bi-star-fill"></i></div>
+          <div>
+            <div class="stat-label">Reviews</div>
+            <div class="stat-value">4.9</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CARDS SECTION  (Part A requirement)
+════════════════════════════════════════════ -->
+<section class="cards-section" id="cards">
+  <div class="container">
+
+    <h2 class="section-title">Featured <span>Projects</span></h2>
+
+    <div class="row g-4">
+
+      <!-- Card 1 -->
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-img-placeholder"
+               style="background:linear-gradient(135deg,#1e293b,#0f172a);">
+            🎨
+          </div>
+          <div class="card-body">
+            <span class="badge mb-2" style="background:rgba(249,115,22,.2);color:var(--primary);font-size:.72rem;">Design</span>
+            <h5 class="card-title">Brand Identity System</h5>
+            <p class="card-text">
+              A complete visual identity package including logo, typography,
+              color palette, and usage guidelines.
+            </p>
+          </div>
+          <div class="card-footer py-3">
+            <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>Due Jun 15</small>
+            <button class="btn btn-sm btn-primary">View</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-img-placeholder"
+               style="background:linear-gradient(135deg,#1e3a1e,#0f172a);">
+            🚀
+          </div>
+          <div class="card-body">
+            <span class="badge mb-2" style="background:rgba(52,211,153,.2);color:#34d399;font-size:.72rem;">Development</span>
+            <h5 class="card-title">E-Commerce Platform</h5>
+            <p class="card-text">
+              Full-stack online store with real-time inventory, payments,
+              and a responsive customer-facing storefront.
+            </p>
+          </div>
+          <div class="card-footer py-3">
+            <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>Due Jul 01</small>
+            <button class="btn btn-sm btn-primary">View</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 — has the Contact button to open the modal -->
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-img-placeholder"
+               style="background:linear-gradient(135deg,#1e1b3a,#0f172a);">
+            📊
+          </div>
+          <div class="card-body">
+            <span class="badge mb-2" style="background:rgba(250,204,21,.2);color:#facc15;font-size:.72rem;">Analytics</span>
+            <h5 class="card-title">Data Analytics Dashboard</h5>
+            <p class="card-text">
+              Interactive charts and KPI tracking for executive-level
+              reporting, with CSV export functionality.
+            </p>
+          </div>
+          <div class="card-footer py-3">
+            <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>Due Jul 20</small>
+            <!-- Opens Modal -->
+            <button class="btn btn-sm btn-primary"
+                    data-bs-toggle="modal" data-bs-target="#contactModal">
+              Inquire
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /row -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     MODAL  (Part A + B requirement)
+     - Header, Body (form), Footer (Close + Submit)
+════════════════════════════════════════════ -->
+<div class="modal fade" id="contactModal" tabindex="-1"
+     aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="contactModalLabel">
+          <i class="bi bi-envelope-fill me-2" style="color:var(--primary)"></i>
+          Get in Touch
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+
+      <!-- Modal Body — Validated Form (Part B) -->
+      <div class="modal-body p-4">
+
+        <!-- Success state (hidden until submit) -->
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon"><i class="bi bi-check-lg"></i></div>
+          <h5 style="font-family:'Syne',sans-serif;font-weight:800;">Message Sent!</h5>
+          <p class="text-muted">Thanks for reaching out. We'll get back to you within 24 hours.</p>
+          <button class="btn btn-outline-primary" id="resetFormBtn">Send Another</button>
+        </div>
+
+        <!--
+          Part B: <form> with class needs-validation + novalidate
+          Fields: Name (required), Email (type=email), Message (min 20 chars)
+          .invalid-feedback under each field
+        -->
+        <form id="contactForm" class="needs-validation" novalidate>
+
+          <div class="row g-3">
+
+            <!-- Name -->
+            <div class="col-12 col-md-6">
+              <label for="name" class="form-label">
+                <i class="bi bi-person me-1"></i>Full Name <span style="color:var(--primary)">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                placeholder="e.g. Maria Santos"
+                required
+              />
+              <div class="invalid-feedback">
+                Please enter your full name.
+              </div>
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-12 col-md-6">
+              <label for="email" class="form-label">
+                <i class="bi bi-envelope me-1"></i>Email Address <span style="color:var(--primary)">*</span>
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                required
+              />
+              <div class="invalid-feedback">
+                Please enter a valid email address.
+              </div>
+              <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <!-- Subject (bonus field) -->
+            <div class="col-12">
+              <label for="subject" class="form-label">
+                <i class="bi bi-tag me-1"></i>Subject
+              </label>
+              <select class="form-select" id="subject" name="subject">
+                <option value="" disabled selected>Choose a topic…</option>
+                <option>Project Inquiry</option>
+                <option>Partnership</option>
+                <option>Support</option>
+                <option>General Question</option>
+              </select>
+            </div>
+
+            <!-- Message (min 20 chars) -->
+            <div class="col-12">
+              <label for="message" class="form-label">
+                <i class="bi bi-chat-text me-1"></i>Message <span style="color:var(--primary)">*</span>
+              </label>
+              <textarea
+                class="form-control"
+                id="message"
+                name="message"
+                rows="5"
+                placeholder="Write your message here (minimum 20 characters)…"
+                minlength="20"
+                required
+              ></textarea>
+              <div class="invalid-feedback" id="messageError">
+                Message must be at least 20 characters.
+              </div>
+              <div class="valid-feedback">Looks good!</div>
+              <div class="form-text" id="charCount" style="color:var(--text-muted);font-size:.78rem;">
+                0 / 20 minimum characters
+              </div>
+            </div>
+
+          </div><!-- /row -->
+        </form>
+
+      </div><!-- /modal-body -->
+
+      <!-- Modal Footer — Close & Submit buttons (Part A requirement) -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary"
+                data-bs-dismiss="modal" id="closeBtn">
+          <i class="bi bi-x-lg me-1"></i>Close
+        </button>
+        <button type="button" class="btn btn-primary px-4" id="submitBtn">
+          <i class="bi bi-send-fill me-2"></i>Submit
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <p class="mb-1">
+      Built with <a href="https://getbootstrap.com/docs/5.3/" target="_blank">Bootstrap 5.3</a>
+      · Activity 1 · Interactive Bootstrap Dashboard with Validated Form
+    </p>
+    <p class="mb-0" style="font-size:.78rem;">
+      Tested at 375 px mobile viewport &nbsp;|&nbsp; form.checkValidity() + .was-validated
+    </p>
+  </div>
+</footer>
+
+<!-- Bootstrap 5.3 JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ──────────────────────────────────────────────
+// Part B — Bootstrap Validation JS
+// Uses form.checkValidity() + .was-validated class
+// ──────────────────────────────────────────────
+
+const form       = document.getElementById('contactForm');
+const submitBtn  = document.getElementById('submitBtn');
+const resetBtn   = document.getElementById('resetFormBtn');
+const successDiv = document.getElementById('formSuccess');
+const messageEl  = document.getElementById('message');
+const charCount  = document.getElementById('charCount');
+
+/* Live character counter for Message field */
+messageEl.addEventListener('input', () => {
+  const len = messageEl.value.length;
+  charCount.textContent = `${len} / 20 minimum characters`;
+  charCount.style.color = len >= 20 ? '#34d399' : 'var(--text-muted)';
+});
+
+/* Submit handler — errors on empty / invalid submit */
+submitBtn.addEventListener('click', () => {
+  // Add .was-validated to trigger Bootstrap's visual feedback
+  form.classList.add('was-validated');
+
+  if (!form.checkValidity()) {
+    // Focus the first invalid field
+    const firstInvalid = form.querySelector(':invalid');
+    if (firstInvalid) firstInvalid.focus();
+    return;  // stop — do NOT submit
+  }
+
+  // ✅ Valid — show success state
+  form.style.display = 'none';
+  successDiv.style.display = 'block';
+  submitBtn.style.display = 'none';
+  document.getElementById('closeBtn').textContent = 'Close';
+});
+
+/* Reset form for another message */
+resetBtn.addEventListener('click', () => {
+  form.reset();
+  form.classList.remove('was-validated');
+  form.style.display = '';
+  successDiv.style.display = 'none';
+  submitBtn.style.display = '';
+  charCount.textContent = '0 / 20 minimum characters';
+  charCount.style.color = 'var(--text-muted)';
+});
+
+/* Reset form when modal is fully closed */
+document.getElementById('contactModal').addEventListener('hidden.bs.modal', () => {
+  form.reset();
+  form.classList.remove('was-validated');
+  form.style.display = '';
+  successDiv.style.display = 'none';
+  submitBtn.style.display = '';
+  charCount.textContent = '0 / 20 minimum characters';
+  charCount.style.color = 'var(--text-muted)';
+});
+</script>
+
+</body>
+</html>
